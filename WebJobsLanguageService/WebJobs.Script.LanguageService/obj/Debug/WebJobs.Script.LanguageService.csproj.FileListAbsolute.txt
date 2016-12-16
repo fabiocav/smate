@@ -48,7 +48,6 @@ D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Sc
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Http.dll
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Http.Owin.dll
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Http.WebHost.dll
-D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Mvc.dll
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Optimization.dll
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Razor.dll
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.WebPages.Deployment.dll
@@ -68,7 +67,6 @@ D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Sc
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Helpers.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Http.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Http.WebHost.xml
-D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Mvc.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Optimization.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Razor.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.WebPages.xml
@@ -102,3 +100,11 @@ D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Sc
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Reactive.Linq.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Reactive.PlatformServices.xml
 D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Reactive.Windows.Threading.xml
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.dll
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.Integration.Owin.dll
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.xml
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.Integration.Owin.xml
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Mvc.dll
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\System.Web.Mvc.xml
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.Integration.SignalR.dll
+D:\src\fabiocav\azure-webjobs-language-service\WebJobsLanguageService\WebJobs.Script.LanguageService\bin\Autofac.Integration.SignalR.xml
