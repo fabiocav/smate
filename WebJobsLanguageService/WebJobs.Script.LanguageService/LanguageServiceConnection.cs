@@ -10,25 +10,30 @@ using WebJobs.Script.LanguageService.Eventing;
 
 namespace WebJobs.Script.LanguageService
 {
-    public class LanguageServiceConnection : PersistentConnection
+    public class LanguageServiceHub : Hub
     {
         private readonly IEventManager _eventManager;
+        private readonly IDisposable _clientEvents;
+        private string _connectionId;
 
-        public LanguageServiceConnection(IEventManager eventManager)
+        public LanguageServiceHub(IEventManager eventManager)
         {
             _eventManager = eventManager;
         }
 
-        protected override Task OnConnected(IRequest request, string connectionId)
+        public async Task<string> LanguageServiceRequest(string name, string message)
         {
-            return Connection.Send(connectionId, "connected");
+            var result = await Task.Run(async () =>
+            {
+                var inputEvent = new LanguageServiceEvent(message, string.Empty, LanguageServiceConstants.EventTypeRequest);
+                var resultAwaiter = _eventManager.Events.OfType<LanguageServiceEvent>().FirstAsync(e => e.EventId == inputEvent.EventId && e.Type == LanguageServiceConstants.EventTypeResponse);
+                _eventManager.Publish(inputEvent);
+
+                return await resultAwaiter;
+            }).ConfigureAwait(false);
+
+            return result.Data;
         }
 
-        protected override Task OnReceived(IRequest request, string connectionId, string data)
-        {
-            _eventManager.Publish(new LanguageServiceEvent(data));
-
-            return Task.CompletedTask;
-        }
     }
 }

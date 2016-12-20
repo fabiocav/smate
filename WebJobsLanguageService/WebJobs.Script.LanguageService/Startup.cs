@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Hosting;
 using Autofac;
 using Autofac.Integration.SignalR;
 using Microsoft.AspNet.SignalR;
@@ -21,15 +22,22 @@ namespace WebJobs.Script.LanguageService
             builder.RegisterType<EventManager>()
                 .As<IEventManager>()
                 .SingleInstance();
-            builder.RegisterType<LanguageServiceConnection>();
+            builder.RegisterType<OmniSharpService>().As<IOmniSharpService>();
+            builder.RegisterType<LanguageServiceHub>();
 
             IContainer container = builder.Build();
 
-            var connectionConfig = new ConnectionConfiguration();
+            var connectionConfig = new HubConfiguration();
             connectionConfig.Resolver = new AutofacDependencyResolver(container);
-
+            connectionConfig.EnableJavaScriptProxies = true;
             app.UseAutofacMiddleware(container);
-            app.MapSignalR<LanguageServiceConnection>("/ls", connectionConfig);
+            app.MapSignalR("/ls", connectionConfig);
+
+            HostingEnvironment.QueueBackgroundWorkItem((ct) =>
+            {
+                container.Resolve<IOmniSharpService>().Start();
+                ct.WaitHandle.WaitOne();
+            });
         }
     }
 }
