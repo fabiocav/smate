@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WebJobs.Script.LanguageService
 {
-    internal class ProcessManager
+    internal class ProcessManager : IDisposable
     {
         private readonly string _fileName;
         private readonly string _arguments;
@@ -18,6 +18,8 @@ namespace WebJobs.Script.LanguageService
         private TaskCompletionSource<object> _taskCompletionSource;
         private StreamWriter _processWriter;
         private readonly ISubject<string> _outputSubject = new Subject<string>();
+        private Process _process;
+        private bool _disposed = false;
 
         public ProcessManager(string fileName)
             : this(fileName, null, null)
@@ -48,23 +50,29 @@ namespace WebJobs.Script.LanguageService
                 Arguments = _arguments
             };
 
-            var process = new Process { StartInfo = startInfo };
-            process.ErrorDataReceived += ProcessDataReceived;
-            process.OutputDataReceived += ProcessDataReceived;
-            process.EnableRaisingEvents = true;
+            _process = new Process { StartInfo = startInfo };
+            _process.ErrorDataReceived += ProcessDataReceived;
+            _process.OutputDataReceived += ProcessDataReceived;
+            _process.EnableRaisingEvents = true;
 
-            process.Exited += (s, e) =>
+            _process.Exited += (s, e) =>
             {
-                _taskCompletionSource.SetResult(process.ExitCode == 0);
-                process.Close();
+                _taskCompletionSource.SetResult(_process.ExitCode == 0);
+                _process.Close();
             };
 
-            process.Start();
+            _process.Start();
 
-            _processWriter = process.StandardInput;
+            _processWriter = _process.StandardInput;
 
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
+            _process.BeginErrorReadLine();
+            _process.BeginOutputReadLine();
+        }
+
+        public void Close()
+        {
+            _process?.Dispose();
+            _process = null;
         }
 
         private async Task StartReading(StreamReader standardOutput)
@@ -87,5 +95,23 @@ namespace WebJobs.Script.LanguageService
         }
 
         public IObservable<string> Output => _outputSubject.AsObservable();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Close();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
     }
 }

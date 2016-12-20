@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Text;
 using System.Threading.Tasks;
 using WebJobs.Script.LanguageService.Eventing;
 
 namespace WebJobs.Script.LanguageService
 {
-    public class OmniSharpService : IOmniSharpService
+    public class OmniSharpService : IOmniSharpService, IDisposable
     {
         private ProcessManager _processManager;
         private readonly IObservable<LanguageServiceEvent> _eventStream;
         private readonly IEventManager _eventManager;
         private readonly IDisposable _outputSubscription;
         private readonly IDisposable _inputSubscription;
+        private bool _disposed = false;
 
         public OmniSharpService(IEventManager eventManager)
         {
@@ -45,6 +43,26 @@ namespace WebJobs.Script.LanguageService
         public void Start()
         {
             _processManager.Start();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _processManager?.Dispose();
+                    _inputSubscription?.Dispose();
+                    _outputSubscription?.Dispose();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }
