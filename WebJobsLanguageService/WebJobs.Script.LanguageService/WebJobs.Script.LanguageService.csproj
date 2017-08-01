@@ -253,7 +253,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="IOmniSharpService.cs" />
-    <Compile Include="LanguageServiceConnection.cs" />
+    <Compile Include="LanguageServiceHub.cs" />
     <Compile Include="LanguageServiceConstants.cs" />
     <Compile Include="OmniSharpService.cs" />
     <Compile Include="ProcessManager.cs" />

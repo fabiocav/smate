@@ -10,12 +10,10 @@ namespace ConsoleTester.Echo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Blah");
             string input = Console.ReadLine();
             while (!string.IsNullOrEmpty(input))
             {
                 Console.WriteLine(input);
-                Console.Out.WriteLine(input);
                 input = Console.ReadLine();
             }
         }

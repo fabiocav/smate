@@ -26,7 +26,13 @@ namespace WebJobs.Script.LanguageService
             var result = await Task.Run(async () =>
             {
                 var inputEvent = new LanguageServiceEvent(message, string.Empty, LanguageServiceConstants.EventTypeRequest);
-                var resultAwaiter = _eventManager.Events.OfType<LanguageServiceEvent>().FirstAsync(e => e.EventId == inputEvent.EventId && e.Type == LanguageServiceConstants.EventTypeResponse);
+
+                // Create an awaiter watching for a response.
+                var resultAwaiter = _eventManager.Events
+                .OfType<LanguageServiceEvent>()
+                .FirstAsync(e => e.EventId == inputEvent.EventId && e.Type == LanguageServiceConstants.EventTypeResponse)
+                .Timeout(TimeSpan.FromSeconds(10), MissingResponse(inputEvent.ClientId, inputEvent.EventId));
+
                 _eventManager.Publish(inputEvent);
 
                 return await resultAwaiter;
@@ -34,6 +40,9 @@ namespace WebJobs.Script.LanguageService
 
             return result.Data;
         }
+
+        private IObservable<LanguageServiceEvent> MissingResponse(string clientId, int eventId) =>
+            new[] { new LanguageServiceEvent("error", clientId, LanguageServiceConstants.EventTypeResponse) { EventId = eventId } }.ToObservable();
 
     }
 }

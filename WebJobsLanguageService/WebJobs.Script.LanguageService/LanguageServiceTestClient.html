@@ -13,8 +13,6 @@
     <script>
         $(function () {
             "use strict";
-            //var connection = $.connection('http://localhost:57377/ls', "clientId=" + $("#clientId").val());
-            //var connection = $.hubConnection('http://localhost:57377/ls');
             var proxy = $.connection.languageServiceHub;
 
             proxy.on('languageServiceEvent', function (name, message) {
@@ -33,10 +31,6 @@
                 });
             });
 
-            //connection.logging = true;
-            //connection.received(function (data) {
-              
-            //});
             proxy.connection.reconnected(function () {
                 $("<li/>").css("background-color", "green")
                           .css("color", "white")

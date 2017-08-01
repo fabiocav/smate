@@ -75,12 +75,6 @@ namespace WebJobs.Script.LanguageService
             _process = null;
         }
 
-        private async Task StartReading(StreamReader standardOutput)
-        {
-            string output = await standardOutput.ReadLineAsync();
-            _outputSubject.OnNext(output);
-        }
-
         private void ProcessDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
