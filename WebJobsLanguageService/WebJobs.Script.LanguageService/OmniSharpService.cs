@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,10 @@ namespace WebJobs.Script.LanguageService
         {
             _eventManager = eventManager;
 
-            _processManager = new ProcessManager(@"D:\src\gh.fabiocav\smate\WebJobsLanguageService\ConsoleTester.Echo\bin\Debug\ConsoleTester.Echo.exe");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                "..\\..\\", @"WebJobsLanguageService\ConsoleTester.Echo\bin\Debug\ConsoleTester.Echo.exe");
+
+            _processManager = new ProcessManager(path);
 
             _outputSubscription = _processManager.Output
                 .Select(s => ProcessEvent(s))
