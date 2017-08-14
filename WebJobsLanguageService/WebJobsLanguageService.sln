@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Script.LanguageService", "WebJobs.Script.LanguageService\WebJobs.Script.LanguageService.csproj", "{4C6B2FCC-DE62-43B8-9DFF-439C645AD535}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986} = {E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTester.Echo", "ConsoleTester.Echo\ConsoleTester.Echo.csproj", "{E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Script.LanguageService.Common", "WebJobs.Script.LanguageService.Common\WebJobs.Script.LanguageService.Common.csproj", "{781D52E9-9CCD-4461-97B1-4CEB861FEEA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5D9C2CB-E9E2-43DC-A7FF-68AECE79B986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781D52E9-9CCD-4461-97B1-4CEB861FEEA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781D52E9-9CCD-4461-97B1-4CEB861FEEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781D52E9-9CCD-4461-97B1-4CEB861FEEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781D52E9-9CCD-4461-97B1-4CEB861FEEA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

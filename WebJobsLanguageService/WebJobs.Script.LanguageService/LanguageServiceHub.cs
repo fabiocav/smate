@@ -21,7 +21,7 @@ namespace WebJobs.Script.LanguageService
             _eventManager = eventManager;
         }
 
-        public async Task<string> LanguageServiceRequest(string name, string message)
+        public async Task<string> LanguageServiceRequest(string message)
         {
             var result = await Task.Run(async () =>
             {
