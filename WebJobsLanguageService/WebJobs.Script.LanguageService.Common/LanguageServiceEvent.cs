@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace WebJobs.Script.LanguageService.Eventing
             Data = data;
             ClientId = clientId;
             Type = type;
-            Name = name;
+            Command = name;
         }
 
-        public string Name { get; set; }
+        public string Command { get; set; }
 
         public string ClientId { get; set; }
 
@@ -25,5 +26,8 @@ namespace WebJobs.Script.LanguageService.Eventing
         public int EventId { get; set; }
 
         public JToken Data { get; }
+
+        [JsonProperty("request_seq")]
+        public int Sequence { get; set; }
     }
 }

@@ -42,7 +42,9 @@ namespace WebJobs.Script.LanguageService
                 return await resultAwaiter;
             }).ConfigureAwait(false);
 
-            return JsonConvert.SerializeObject(result);
+            string eventData = JsonConvert.SerializeObject(result);
+            this.Clients.Caller.languageServiceEvent(eventData);
+            return eventData;
         }
 
         private IObservable<LanguageServiceEvent> MissingResponse(string clientId, int eventId) =>

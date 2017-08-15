@@ -22,14 +22,16 @@ namespace ConsoleTester.Echo
                 LanguageServiceEvent languageEvent = JsonConvert.DeserializeObject<LanguageServiceEvent>(input);
 
                 LanguageServiceEvent response = null;
-                switch (languageEvent.Name)
+                switch (languageEvent.Command)
                 {
                     case "/autocomplete":
                         JToken data = JToken.Parse(Resources.AutoCompleteResponse);
-                        response = new LanguageServiceEvent(data, languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Name);
+                        response = new LanguageServiceEvent(data, languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Command);
+                        response.Sequence = languageEvent.Sequence;
                         break;
                     case "/updatebuffer":
-                        response = new LanguageServiceEvent(JObject.FromObject(new { result = true }), languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Name);
+                        response = new LanguageServiceEvent(JObject.FromObject(new { result = true }), languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Command);
+                        response.Sequence = languageEvent.Sequence;
                         break;
                     default:
                         break;

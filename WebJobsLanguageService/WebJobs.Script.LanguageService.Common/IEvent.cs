@@ -7,6 +7,6 @@ namespace WebJobs.Script.LanguageService.Eventing
 {
     public interface IEvent
     {
-        string Name { get; }
+        string Command { get; }
     }
 }
