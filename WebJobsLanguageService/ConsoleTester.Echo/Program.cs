@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using WebJobs.Script.LanguageService.Eventing;
 using ConsoleTester.Echo.Properties;
+using System.Diagnostics;
+using WebJobs.Script.LanguageService;
 
 namespace ConsoleTester.Echo
 {
@@ -20,13 +22,14 @@ namespace ConsoleTester.Echo
                 LanguageServiceEvent languageEvent = JsonConvert.DeserializeObject<LanguageServiceEvent>(input);
 
                 LanguageServiceEvent response = null;
-                switch (languageEvent.Type)
+                switch (languageEvent.Name)
                 {
                     case "/autocomplete":
-                        response = new LanguageServiceEvent(Resources.AutoCompleteResponse, languageEvent.ClientId, languageEvent.Type);
+                        JToken data = JToken.Parse(Resources.AutoCompleteResponse);
+                        response = new LanguageServiceEvent(data, languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Name);
                         break;
                     case "/updatebuffer":
-                        response = new LanguageServiceEvent("true", languageEvent.ClientId, languageEvent.Type);
+                        response = new LanguageServiceEvent(JObject.FromObject(new { result = true }), languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Name);
                         break;
                     default:
                         break;

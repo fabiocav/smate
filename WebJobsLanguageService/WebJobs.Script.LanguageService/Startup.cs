@@ -22,7 +22,7 @@ namespace WebJobs.Script.LanguageService
             builder.RegisterType<EventManager>()
                 .As<IEventManager>()
                 .SingleInstance();
-            builder.RegisterType<OmniSharpService>().As<IOmniSharpService>();
+            builder.RegisterType<OmniSharpService>().As<IOmniSharpService>().SingleInstance();
             builder.RegisterType<LanguageServiceHub>();
 
             IContainer container = builder.Build();

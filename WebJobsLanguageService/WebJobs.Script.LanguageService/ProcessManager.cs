@@ -79,7 +79,12 @@ namespace WebJobs.Script.LanguageService
         {
             if (e.Data != null)
             {
-                _outputSubject.OnNext(e.Data);
+                try
+                {
+                    _outputSubject.OnNext(e.Data);
+                } catch (Exception exc) {
+                    Console.Write(exc);
+                }
             }
         }
 

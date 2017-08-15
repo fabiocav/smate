@@ -17,6 +17,7 @@ namespace WebJobs.Script.LanguageService
         private readonly IDisposable _outputSubscription;
         private readonly IDisposable _inputSubscription;
         private bool _disposed = false;
+        private bool _started;
 
         public OmniSharpService(IEventManager eventManager)
         {
@@ -28,6 +29,7 @@ namespace WebJobs.Script.LanguageService
             _processManager = new ProcessManager(path);
 
             _outputSubscription = _processManager.Output
+                .Where(s => !string.IsNullOrEmpty(s))
                 .Select(s => ProcessEvent(s))
                 .Subscribe(OnOutput);
 
@@ -38,11 +40,18 @@ namespace WebJobs.Script.LanguageService
 
         private LanguageServiceEvent ProcessEvent(string s)
         {
-            var jsonObject = JObject.Parse(s);
-            return new LanguageServiceEvent(s, string.Empty, LanguageServiceConstants.EventTypeResponse)
+            if (string.IsNullOrEmpty(s))
             {
-                EventId = jsonObject.Value<int>("Request_seq")
-            };
+                return null;
+            }
+            try
+            {
+                return JsonConvert.DeserializeObject<LanguageServiceEvent>(s);
+            }
+            catch (JsonSerializationException exc)
+            {
+                return new LanguageServiceEvent(JObject.FromObject(exc), "2", LanguageServiceConstants.EventTypeResponse, "error") { EventId = 3 };            
+            }
         }
 
         private void OnOutput(LanguageServiceEvent outputEvent)
@@ -52,12 +61,16 @@ namespace WebJobs.Script.LanguageService
 
         public async Task SendEvent(LanguageServiceEvent message)
         {
-            await _processManager.Write(message.Data.ToString());
+            await _processManager.Write(JsonConvert.SerializeObject(message));
         }
 
         public void Start()
         {
-            _processManager.Start();
+            if (!_started)
+            {
+                _started = true;
+                _processManager.Start();
+            }
         }
 
         protected virtual void Dispose(bool disposing)

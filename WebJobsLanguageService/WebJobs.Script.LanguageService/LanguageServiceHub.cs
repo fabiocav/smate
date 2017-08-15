@@ -7,6 +7,8 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hosting;
 using WebJobs.Script.LanguageService.Eventing;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WebJobs.Script.LanguageService
 {
@@ -16,8 +18,9 @@ namespace WebJobs.Script.LanguageService
         private readonly IDisposable _clientEvents;
         private string _connectionId;
 
-        public LanguageServiceHub(IEventManager eventManager)
+        public LanguageServiceHub(IEventManager eventManager , IOmniSharpService service)
         {
+            service.Start();
             _eventManager = eventManager;
         }
 
@@ -25,7 +28,8 @@ namespace WebJobs.Script.LanguageService
         {
             var result = await Task.Run(async () =>
             {
-                var inputEvent = new LanguageServiceEvent(message, string.Empty, LanguageServiceConstants.EventTypeRequest);
+                var inputEvent = JsonConvert.DeserializeObject<LanguageServiceEvent>(message);
+                inputEvent.Type = LanguageServiceConstants.EventTypeRequest;
 
                 // Create an awaiter watching for a response.
                 var resultAwaiter = _eventManager.Events
@@ -38,11 +42,11 @@ namespace WebJobs.Script.LanguageService
                 return await resultAwaiter;
             }).ConfigureAwait(false);
 
-            return result.Data;
+            return JsonConvert.SerializeObject(result);
         }
 
         private IObservable<LanguageServiceEvent> MissingResponse(string clientId, int eventId) =>
-            new[] { new LanguageServiceEvent("error", clientId, LanguageServiceConstants.EventTypeResponse) { EventId = eventId } }.ToObservable();
+            new[] { new LanguageServiceEvent(JObject.FromObject(new { error = "missing response"}), clientId, LanguageServiceConstants.EventTypeResponse, "missingresposne") { EventId = eventId } }.ToObservable();
 
     }
 }

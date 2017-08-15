@@ -23,7 +23,7 @@
             $.connection.hub.start().done(function () {
                 $('#send').click(function () {
                     $("#stopStart").prop("disabled", false);
-                    proxy.server.languageServiceRequest(window.JSON.stringify({ clientId: $("#clientId").val(), type: $("#requestType"), data: $("#msg").val() }))
+                    proxy.server.languageServiceRequest(window.JSON.stringify({ clientId: $("#clientId").val(), name: $("#requestType").val(), data: window.JSON.parse($("#msg").val()) }))
                     .done(function (res) {
                         alert(res);
                     });
