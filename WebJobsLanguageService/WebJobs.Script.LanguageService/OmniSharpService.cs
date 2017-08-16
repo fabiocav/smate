@@ -18,15 +18,18 @@ namespace WebJobs.Script.LanguageService
         private readonly IDisposable _inputSubscription;
         private bool _disposed = false;
         private bool _started;
+        private readonly bool _initialized;
 
         public OmniSharpService(IEventManager eventManager)
         {
+            _initialized = true;
             _eventManager = eventManager;
 
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-                "..\\..\\", @"WebJobsLanguageService\ConsoleTester.Echo\bin\Debug\ConsoleTester.Echo.exe");
+            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+            //    "..\\..\\", @"WebJobsLanguageService\ConsoleTester.Echo\bin\Debug\ConsoleTester.Echo.exe");
+            string path = Path.Combine(@"C:\omnisharp\OmniSharp.exe");
 
-            _processManager = new ProcessManager(path);
+            _processManager = new ProcessManager(path, "-s C:\\func --stdio --encoding utf-8 --loglevel debug DotNet:enablePackageRestore=false", null);
 
             _outputSubscription = _processManager.Output
                 .Where(s => !string.IsNullOrEmpty(s))
@@ -46,13 +49,13 @@ namespace WebJobs.Script.LanguageService
             }
             try
             {
-                return JsonConvert.DeserializeObject<LanguageServiceEvent>(s);
+                return JsonConvert.DeserializeObject<LanguageServiceResponse>(s);
             }
-            catch (JsonSerializationException exc)
+            catch (JsonException exc)
             {
-                return new LanguageServiceEvent(JObject.FromObject(exc), "2", LanguageServiceConstants.EventTypeResponse, "error") { EventId = 3 };            
+                return new LanguageServiceEvent("1", LanguageServiceConstants.EventTypeResponse, "error") { EventId = 3 };
             }
-        }
+        }   
 
         private void OnOutput(LanguageServiceEvent outputEvent)
         {

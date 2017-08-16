@@ -6,6 +6,8 @@ using Microsoft.Owin;
 using Owin;
 using WebJobs.Script.LanguageService.Eventing;
 using Microsoft.Owin.Cors;
+using System.Diagnostics;
+using System.Threading;
 
 [assembly: OwinStartup(typeof(WebJobs.Script.LanguageService.Startup))]
 

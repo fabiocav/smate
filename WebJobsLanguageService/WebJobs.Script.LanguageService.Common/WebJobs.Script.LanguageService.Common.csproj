@@ -46,6 +46,8 @@
     <Compile Include="IEvent.cs" />
     <Compile Include="LanguageServiceConstants.cs" />
     <Compile Include="LanguageServiceEvent.cs" />
+    <Compile Include="LanguageServiceRequest.cs" />
+    <Compile Include="LanguageServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

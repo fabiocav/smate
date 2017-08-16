@@ -9,6 +9,7 @@ using Microsoft.AspNet.SignalR.Hosting;
 using WebJobs.Script.LanguageService.Eventing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace WebJobs.Script.LanguageService
 {
@@ -28,13 +29,12 @@ namespace WebJobs.Script.LanguageService
         {
             var result = await Task.Run(async () =>
             {
-                var inputEvent = JsonConvert.DeserializeObject<LanguageServiceEvent>(message);
-                inputEvent.Type = LanguageServiceConstants.EventTypeRequest;
-
+                var inputEvent = JsonConvert.DeserializeObject<LanguageServiceRequest>(message);
+                inputEvent.Arguments["fileName"] = Path.Combine(@"c:\func", inputEvent.Arguments["fileName"].Value<string>());
                 // Create an awaiter watching for a response.
                 var resultAwaiter = _eventManager.Events
-                .OfType<LanguageServiceEvent>()
-                .FirstAsync(e => e.EventId == inputEvent.EventId && e.Type == LanguageServiceConstants.EventTypeResponse)
+                .OfType<LanguageServiceResponse>()
+                .FirstAsync(e => e.RequestSequence == inputEvent.Sequence && e.Type == LanguageServiceConstants.EventTypeResponse)
                 .Timeout(TimeSpan.FromSeconds(10), MissingResponse(inputEvent.ClientId, inputEvent.EventId));
 
                 _eventManager.Publish(inputEvent);
@@ -48,7 +48,7 @@ namespace WebJobs.Script.LanguageService
         }
 
         private IObservable<LanguageServiceEvent> MissingResponse(string clientId, int eventId) =>
-            new[] { new LanguageServiceEvent(JObject.FromObject(new { error = "missing response"}), clientId, LanguageServiceConstants.EventTypeResponse, "missingresposne") { EventId = eventId } }.ToObservable();
+            new[] { new LanguageServiceResponse(clientId, "missingresposne") { EventId = eventId, Body = JObject.FromObject(new { error = "missing response" }) } }.ToObservable();
 
     }
 }

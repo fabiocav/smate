@@ -9,9 +9,8 @@ namespace WebJobs.Script.LanguageService.Eventing
 {
     public class LanguageServiceEvent : IEvent
     {
-        public LanguageServiceEvent(JToken data, string clientId, string type, string name)
+        public LanguageServiceEvent(string clientId, string type, string name)
         {
-            Data = data;
             ClientId = clientId;
             Type = type;
             Command = name;
@@ -25,9 +24,7 @@ namespace WebJobs.Script.LanguageService.Eventing
 
         public int EventId { get; set; }
 
-        public JToken Data { get; }
-
-        [JsonProperty("request_seq")]
+        [JsonProperty("Seq")]
         public int Sequence { get; set; }
     }
 }

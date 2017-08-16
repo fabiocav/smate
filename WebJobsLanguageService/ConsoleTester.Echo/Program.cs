@@ -26,11 +26,11 @@ namespace ConsoleTester.Echo
                 {
                     case "/autocomplete":
                         JToken data = JToken.Parse(Resources.AutoCompleteResponse);
-                        response = new LanguageServiceEvent(data, languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Command);
+                        response = new LanguageServiceResponse(languageEvent.ClientId, languageEvent.Command) { Body = data };
                         response.Sequence = languageEvent.Sequence;
                         break;
                     case "/updatebuffer":
-                        response = new LanguageServiceEvent(JObject.FromObject(new { result = true }), languageEvent.ClientId, LanguageServiceConstants.EventTypeResponse, languageEvent.Command);
+                        response = new LanguageServiceResponse(languageEvent.ClientId, languageEvent.Command) { Body = JObject.FromObject(new { result = true }) };
                         response.Sequence = languageEvent.Sequence;
                         break;
                     default:
